@@ -1,8 +1,8 @@
 resource "aws_instance" "kafka" {
   count         = 3
   ami           = data.aws_ami.amazon_linux.id
-  instance_type = "t3.nano"
-
+  instance_type = "t3.small"
+  key_name = "abbas"
   subnet_id              = data.aws_subnets.private_subnet.ids[count.index]
   vpc_security_group_ids = [aws_security_group.kafka.id]
 
@@ -26,4 +26,12 @@ resource "aws_ebs_volume" "kafka_data" {
   tags = {
     Name = "kafka-data-${count.index + 1}"
   }
+}
+
+resource "aws_volume_attachment" "kafka_data" {
+  count = 3
+
+  device_name = "/dev/xvdf"
+  volume_id   = aws_ebs_volume.kafka_data[count.index].id
+  instance_id = aws_instance.kafka[count.index].id
 }
