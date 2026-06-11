@@ -1,11 +1,16 @@
 resource "aws_instance" "kafka" {
-  count         = 3
-  ami           = data.aws_ami.amazon_linux.id
-  instance_type = "t3.small"
-  key_name = "abbas"
+  count                  = 3
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = "t3.small"
+  key_name               = "abbas"
   subnet_id              = data.aws_subnets.private_subnet.ids[count.index]
   vpc_security_group_ids = [aws_security_group.kafka.id]
+  metadata_options {
+    http_endpoint          = "enabled"
+    http_tokens            = "required"
+    instance_metadata_tags = "enabled"
 
+  }
   iam_instance_profile = aws_iam_instance_profile.kafka.name
 
   root_block_device {
@@ -13,7 +18,8 @@ resource "aws_instance" "kafka" {
   }
 
   tags = {
-    Name = "kafka-${count.index + 1}"
+    Name    = "kafka-${count.index + 1}",
+    node_id = "${count.index + 1}"
   }
 }
 
