@@ -34,7 +34,8 @@ data "aws_iam_policy_document" "kafka_policy" {
     effect = "Allow"
 
     actions = [
-      "s3:*"
+      "s3:*",
+      "ec2:*"
     ]
 
     resources = [

@@ -1,6 +1,6 @@
 resource "aws_instance" "kafka" {
   count                  = 3
-  ami                    = data.aws_ami.amazon_linux.id
+  ami                    = "ami-0e25c98f8f1e341e9"
   instance_type          = "t3.small"
   key_name               = "abbas"
   subnet_id              = data.aws_subnets.private_subnet.ids[count.index]
@@ -19,7 +19,7 @@ resource "aws_instance" "kafka" {
 
   tags = {
     Name    = "kafka-${count.index + 1}",
-    node_id = "${count.index + 1}"
+    NODE_ID = "${count.index + 1}"
   }
 }
 
