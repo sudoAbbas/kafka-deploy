@@ -1,5 +1,5 @@
 resource "aws_instance" "kafka" {
-  count                  = 3
+  count                  = 2
   ami                    = "ami-0e25c98f8f1e341e9"
   instance_type          = "t3.small"
   key_name               = "abbas"
@@ -24,7 +24,7 @@ resource "aws_instance" "kafka" {
 }
 
 resource "aws_ebs_volume" "kafka_data" {
-  count             = 3
+  count             = 2
   availability_zone = aws_instance.kafka[count.index].availability_zone
   size              = 5
   type              = "gp3"
@@ -35,7 +35,7 @@ resource "aws_ebs_volume" "kafka_data" {
 }
 
 resource "aws_volume_attachment" "kafka_data" {
-  count = 3
+  count = 2
 
   device_name = "/dev/xvdf"
   volume_id   = aws_ebs_volume.kafka_data[count.index].id

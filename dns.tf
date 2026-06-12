@@ -35,7 +35,6 @@ resource "aws_route53_record" "kafka_bootstrap" {
 
   records = [
     aws_instance.kafka[0].private_ip,
-    aws_instance.kafka[1].private_ip,
-    aws_instance.kafka[2].private_ip
+    aws_instance.kafka[1].private_ip
   ]
 }
